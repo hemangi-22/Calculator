@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Stylesheet -->
+  
+  </head>
+  <style>
+    /* Reset default margin and padding for better alignment */
+html, body, div, p, input {
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .calculator {
+    border: 1px solid #0f0e0e;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #fff;
+    width: 320px;
+  }
+  
+  .display {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  
+  input[type="text"] {
+    font-size: 24px;
+    border: none;
+    outline: none;
+    width: 100%;
+    text-align: right;
+  }
+  
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+  }
+  
+  .input-button {
+    font-size: 20px;
+    padding: 10px;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #571d1d;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    color: #fffcfc;
+
+  }
+  
+  .input-button:hover {
+    background-color: #5e5c5c;
+    transform: scale(1.1);
+  }
+  
+  #equal {
+    grid-column: span 2; /* Reduce the width to span only 2 columns */
+    background-color: #0a0a0a; /* Blue color */
+    color: #fff;
+  }
+  
+  #clear {
+    background-color: #070707; /* Red color */
+    color: #fffcfc;
+  }
+  
+  #erase {
+    background-color: #0c0c0c; /* Yellow color */
+    color: #fafafa;
+  }
+  
+    </style>
+  <body>
+    <div class="calculator">
+      <div class="display">
+        <input type="text" placeholder="0" id="input" disabled />
+      </div>
+      <div class="buttons">
+        <!-- Full Erase -->
+        <input type="button" value="AC" id="clear" />
+        <!-- Erase Single Value -->
+        <input type="button" value="DEL" id="erase" />
+        <input type="button" value="%" class="input-button" />
+        <input type="button" value="/" class="input-button" />
+
+       
+        <input type="button" value="7" class="input-button" />
+        <input type="button" value="8" class="input-button" />
+        <input type="button" value="9" class="input-button" />
+        <input type="button" value="*" class="input-button" />
+
+       
+        <input type="button" value="6" class="input-button" />
+        <input type="button" value="5" class="input-button" />
+        <input type="button" value="4" class="input-button" />
+        <input type="button" value="-" class="input-button" />
+
+       
+        <input type="button" value="1" class="input-button" />
+        <input type="button" value="2" class="input-button" />
+        <input type="button" value="3" class="input-button" />
+        <input type="button" value="+" class="input-button" />
+
+        <input type="button" value="0" class="input-button" />
+        <input type="button" value="." class="input-button" />
+        <input type="button" value="=" id="equal" />
+        
+      </div>
+    </div>
+    <!-- Script -->
+    <script>
+        let equal_pressed = 0;
+//Refer all buttons excluding AC and DEL
+let button_input = document.querySelectorAll(".input-button");
+//Refer input,equal,clear and erase
+let input = document.getElementById("input");
+let equal = document.getElementById("equal");
+let clear = document.getElementById("clear");
+let erase = document.getElementById("erase");
+
+window.onload = () => {
+  input.value = "";
+};
+
+//Access each class using forEach
+button_input.forEach((button_class) => {
+  button_class.addEventListener("click", () => {
+    if (equal_pressed == 1) {
+      input.value = "";
+      equal_pressed = 0;
+    }
+    //display value of each button
+    input.value += button_class.value;
+  });
+});
+
+//Solve the user's input when clicked on equal sign
+equal.addEventListener("click", () => {
+  equal_pressed = 1;
+  let inp_val = input.value;
+  try {
+    //evaluate user's input
+    let solution = eval(inp_val);
+    //True for natural numbers
+    //false for decimals
+    if (Number.isInteger(solution)) {
+      input.value = solution;
+    } else {
+      input.value = solution.toFixed(2);
+    }
+  } catch (err) {
+    //If user has entered invalid input
+    alert("Invalid Input");
+  }
+});
+
+//Clear Whole Input
+clear.addEventListener("click", () => {
+  input.value = "";
+});
+//Erase Single Digit
+erase.addEventListener("click", () => {
+  input.value = input.value.substr(0, input.value.length - 1);
+});
+    </script>
+  </body>
+</html>
